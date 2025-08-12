@@ -134,7 +134,30 @@ public class Parser {
     }
 
     private boolean E() {
-        return false;
+        return T() && Eprima();
+    }
+
+    private boolean Eprima() {
+        return (term(Token.PLUS) && T() && Eprima()) || (term(Token.MINUS) && T() && Eprima()) || (true);
+    }
+
+    private boolean T(){
+        return F() && Tprima();
+    }
+    private boolean Tprima(){
+        return (term(Token.MULT) && F() && Tprima()) || (term(Token.DIV) && F() && Tprima()) || (true);
+    }
+
+    private boolean F(){
+        return P() && Fprima();
+    }
+
+    private boolean Fprima(){
+        return (term(Token.EXP) && P() && Fprima()) || (true);
+    }
+
+    private boolean P(){
+        return (term(Token.UNARY) && P()) || (term(Token.LPAREN) && E() && term(Token.RPAREN)) || (term(Token.NUMBER));
     }
 
     /* TODO: sus otras funciones aqui */
